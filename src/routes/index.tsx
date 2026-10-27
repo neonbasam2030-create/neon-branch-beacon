@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, FileText, ShieldCheck, Table2, Zap, Database, Radar, Sun, Moon } from "lucide-react";
+import { ArrowLeft, Check, ShieldCheck, Table2, Zap, Database, Radar, Sun, Moon } from "lucide-react";
+import { ZeroLogo } from "@/components/zero-logo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "نيون تقرير — افهم تقاريرك بلا ضجيج" },
-      { name: "description", content: "مساحة عمل عربية لفحص تقارير إكسل واستكشاف أوراقها وصفوفها بوضوح ودقة." },
-      { property: "og:title", content: "نيون تقرير — افهم تقاريرك بلا ضجيج" },
-      { property: "og:description", content: "مساحة عمل عربية لفحص تقارير إكسل بوضوح ودقة." },
+      { title: "ZERO — تحليلات البيانات" },
+      { name: "description", content: "من الملفات إلى البيانات المنظمة والتحليلات الذكية — مساحة عمل عربية لفحص تقارير إكسل واستكشاف أوراقها وصفوفها بوضوح ودقة." },
+      { property: "og:title", content: "ZERO — تحليلات البيانات" },
+      { property: "og:description", content: "من الملفات إلى البيانات المنظمة والتحليلات الذكية — مساحة عمل عربية لفحص تقارير إكسل بوضوح ودقة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -49,10 +50,13 @@ function Index() {
     <div className="relative min-h-screen overflow-hidden">
       <div className="grid-bg pointer-events-none absolute inset-0" />
       <header className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-3">
-          <div className="neon-box grid size-11 place-items-center rounded-xl text-neon"><FileText className="size-5" /></div>
-          <span className="neon-text font-display text-2xl">نيون تقرير</span>
-        </div>
+          <div className="flex items-center gap-3">
+            <div className="neon-box grid size-11 place-items-center rounded-xl bg-muted text-foreground"><ZeroLogo className="logo-glow size-7" /></div>
+            <div className="leading-tight">
+              <span className="neon-text block font-display text-2xl tracking-wide" dir="ltr">ZERO</span>
+              <span className="block text-[11px] text-muted-foreground">تحليلات البيانات</span>
+            </div>
+          </div>
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
           {["كيف يعمل", "المزايا", "الخصوصية"].map((l) => <a key={l} href="#" className="transition hover:text-neon">{l}</a>)}
         </nav>
@@ -68,11 +72,11 @@ function Index() {
       <main className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-14 lg:grid-cols-2">
         <section className="rise">
           <p className="mb-6 flex items-center gap-2 text-sm text-muted-foreground"><span className="size-2 animate-pulse rounded-full bg-neon" /> بيئة تجريبية للفرق المكتبية</p>
-          <h1 className="font-display text-6xl leading-tight md:text-7xl">
-            <span className="block">افهم تقاريرك.</span>
-            <span className="neon-text-2 block">بلا ضجيج.</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-muted-foreground">نيون تقرير مساحة عمل عربية لفحص مجموعات تقارير إكسل، واستكشاف أوراقها وصفوفها بوضوح ودقة.</p>
+          <ZeroLogo className="logo-glow mb-5 size-16 text-foreground" />
+          <h1 className="neon-text font-display text-7xl leading-none tracking-wide md:text-8xl" dir="ltr">ZERO</h1>
+          <p className="mt-2 font-display text-3xl">تحليلات البيانات</p>
+          <p className="neon-text-2 mt-3 text-2xl font-bold" dir="ltr">Analyze. Organize. Achieve.</p>
+          <p className="mt-6 max-w-lg text-lg leading-8 text-muted-foreground">من الملفات إلى البيانات المنظمة والتحليلات الذكية — مساحة عمل عربية لفحص مجموعات تقارير إكسل، واستكشاف أوراقها وصفوفها بوضوح ودقة.</p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
             <button className="neon-box flex items-center gap-3 rounded-2xl bg-primary px-7 py-4 text-lg font-bold text-primary-foreground transition hover:scale-105">استكشف العرض التجريبي <ArrowLeft className="size-5" /></button>
             <a href="#" className="text-muted-foreground transition hover:text-neon">اكتشف طريقة العمل ↙</a>
