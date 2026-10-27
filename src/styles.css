@@ -152,6 +152,7 @@ body { font-family: var(--font-body); background:
 @utility rise { animation: rise .8s cubic-bezier(.2,.8,.2,1) both; }
 @utility bar { animation: bar 1.6s ease-in-out infinite alternate; transform-origin: bottom; }
 @utility pulse-glow { animation: pulseglow 2.4s ease-in-out infinite; }
+@utility logo-glow { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--neon) 55%, transparent)) drop-shadow(0 0 14px color-mix(in oklab, var(--neon-2) 35%, transparent)); }
 
 @keyframes flicker { 0%,19%,21%,23%,55%,57%,100% { opacity: 1 } 20%,22%,56% { opacity: .55 } }
 @keyframes float { 50% { transform: translateY(-14px) } }
