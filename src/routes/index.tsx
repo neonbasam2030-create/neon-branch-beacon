@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft, Check, FileText, ShieldCheck, Table2, Zap, Database, Radar } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Check, FileText, ShieldCheck, Table2, Zap, Database, Radar, Sun, Moon } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,6 +31,19 @@ const data = {
 
 function Index() {
   const [tab, setTab] = useState<"branches" | "monthly">("branches");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  useEffect(() => {
+    if (localStorage.getItem("theme") === "light") {
+      document.documentElement.classList.remove("dark");
+      setTheme("light");
+    }
+  }, []);
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.classList.toggle("dark", next === "dark");
+    localStorage.setItem("theme", next);
+  };
   const rows = data[tab];
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -43,7 +56,10 @@ function Index() {
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
           {["كيف يعمل", "المزايا", "الخصوصية"].map((l) => <a key={l} href="#" className="transition hover:text-neon">{l}</a>)}
         </nav>
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
+          <button onClick={toggleTheme} aria-label="تبديل الوضع" title="التبديل بين الوضع النهاري والليلي" className="glass neon-box grid size-10 place-items-center rounded-full text-neon transition hover:scale-110">
+            {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+          </button>
           <button className="glass rounded-full px-5 py-2 text-sm transition hover:text-neon">تسجيل الدخول</button>
           <button className="pulse-glow flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">ابدأ التجربة <ArrowLeft className="size-4" /></button>
         </div>
