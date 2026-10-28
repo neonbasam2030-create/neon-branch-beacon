@@ -6,6 +6,13 @@ import { ZeroLogo } from "@/components/zero-logo";
 const DEFAULT_USERNAME = "admin";
 const DEFAULT_PASSWORD = "123456";
 
+const toWesternDigits = (value: string) =>
+  value
+    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06f0));
+
+const normalize = (value: string) => toWesternDigits(value).trim();
+
 export function LoginPage({ title }: { title: string }) {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState(false);
@@ -17,8 +24,8 @@ export function LoginPage({ title }: { title: string }) {
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          const username = String(data.get("username") ?? "").trim();
-          const password = String(data.get("password") ?? "");
+          const username = normalize(String(data.get("username") ?? "")).toLowerCase();
+          const password = normalize(String(data.get("password") ?? ""));
           if (username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD) {
             setError(false);
             setMsg("جارٍ الدخول...");
@@ -44,7 +51,7 @@ export function LoginPage({ title }: { title: string }) {
         <label className="mt-4 block text-sm">كلمة المرور
           <div className="mt-2 flex items-center gap-2 rounded-xl border border-border bg-muted px-3 focus-within:border-neon">
             <Lock className="size-4 text-muted-foreground" />
-            <input required name="password" dir="ltr" type="password" autoComplete="current-password" className="w-full bg-transparent py-3 outline-none" />
+            <input required name="password" dir="ltr" type="password" inputMode="numeric" autoComplete="current-password" className="w-full bg-transparent py-3 outline-none" />
           </div>
         </label>
         <button className="mt-6 w-full rounded-xl bg-primary py-3 font-bold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-[var(--glow)]">دخول</button>
