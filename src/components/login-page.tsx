@@ -1,16 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowRight, Lock, User } from "lucide-react";
 import { ZeroLogo } from "@/components/zero-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function LoginPage({ title }: { title: string }) {
   const [msg, setMsg] = useState("");
-  useEffect(() => {
-    if (localStorage.getItem("theme") === "light") document.documentElement.classList.remove("dark");
-  }, []);
   return (
     <div className="relative grid min-h-screen place-items-center overflow-hidden px-4 py-10">
       <div className="grid-bg pointer-events-none absolute inset-0" />
+      <ThemeToggle className="absolute top-6 left-6 z-10" />
       <form
         onSubmit={(e) => { e.preventDefault(); setMsg("تسجيل الدخول غير مفعّل حالياً — هذه نسخة تجريبية."); }}
         className="glass neon-box rise relative w-full max-w-md rounded-3xl p-8"
