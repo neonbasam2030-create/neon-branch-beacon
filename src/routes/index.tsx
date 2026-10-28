@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Check, ShieldCheck, Table2, Zap, Database, Radar, Sun, Moon } from "lucide-react";
 import { ZeroLogo } from "@/components/zero-logo";
@@ -64,8 +64,8 @@ function Index() {
           <button onClick={toggleTheme} aria-label="تبديل الوضع" title="التبديل بين الوضع النهاري والليلي" className="glass neon-box grid size-10 place-items-center rounded-full text-neon transition hover:scale-110">
             {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
           </button>
-          <button className="glass rounded-full px-5 py-2 text-sm transition hover:text-neon">تسجيل الدخول</button>
-          <button className="pulse-glow flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">ابدأ التجربة <ArrowLeft className="size-4" /></button>
+          <button onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })} className="glass hidden rounded-full px-5 py-2 text-sm transition hover:text-neon sm:block">تعرّف على المنصة</button>
+          <Link to="/owner-login" className="pulse-glow flex items-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground sm:px-5">دخول المالك <ArrowLeft className="size-4" /></Link>
         </div>
       </header>
 
@@ -77,9 +77,9 @@ function Index() {
           <p className="mt-2 font-display text-3xl">تحليلات البيانات</p>
           <p className="neon-text-2 mt-3 text-2xl font-bold" dir="ltr">Analyze. Organize. Achieve.</p>
           <p className="mt-6 max-w-lg text-lg leading-8 text-muted-foreground">من الملفات إلى البيانات المنظمة والتحليلات الذكية — مساحة عمل عربية لفحص مجموعات تقارير إكسل، واستكشاف أوراقها وصفوفها بوضوح ودقة.</p>
-          <div className="mt-8 flex flex-wrap items-center gap-6">
-            <button className="neon-box flex items-center gap-3 rounded-2xl bg-primary px-7 py-4 text-lg font-bold text-primary-foreground transition hover:scale-105">استكشف العرض التجريبي <ArrowLeft className="size-5" /></button>
-            <a href="#" className="text-muted-foreground transition hover:text-neon">اكتشف طريقة العمل ↙</a>
+          <div className="mt-8 flex flex-col items-start gap-2">
+            <Link to="/user-login" className="neon-box flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-primary px-7 py-4 text-lg font-bold text-primary-foreground transition duration-300 hover:-translate-y-0.5 hover:shadow-[var(--glow)] sm:w-auto">دخول المستخدم <ArrowLeft className="size-5" /></Link>
+            <p className="text-xs text-muted-foreground">الدخول مخصص للمستخدمين المصرح لهم</p>
           </div>
           <div className="mt-10 flex items-center gap-4 text-sm">
             <ShieldCheck className="size-7 text-neon-3" />
@@ -101,7 +101,7 @@ function Index() {
               <Table2 className="size-5 text-neon" />
             </div>
             <div className="my-5 flex items-center justify-between">
-              <h2 className="text-lg font-bold">ملخص التقرير</h2>
+              <h2 className="flex items-center gap-2 text-lg font-bold">ملخص التقرير <span className="rounded-full bg-neon-2/15 px-2 py-0.5 text-[10px] font-bold text-neon-2">بيانات تجريبية</span></h2>
               <span className="rounded-full border border-border px-3 py-1 text-xs text-neon-3">● جاهز للفحص</span>
             </div>
             <div className="grid grid-cols-3 gap-3">
@@ -133,7 +133,7 @@ function Index() {
         </section>
       </main>
 
-      <section className="relative mx-auto grid max-w-6xl gap-6 px-6 pb-20 pt-10 md:grid-cols-3">
+      <section id="features" className="relative mx-auto grid max-w-6xl scroll-mt-6 gap-6 px-6 pb-20 pt-10 md:grid-cols-3">
         {[
           { i: Zap, t: "فحص فوري", d: "افتح التقرير واستعرض ملخصه خلال ثوانٍ." },
           { i: Radar, t: "رصد التغيرات", d: "اكتشف الارتفاع والانخفاض في كل بند." },
