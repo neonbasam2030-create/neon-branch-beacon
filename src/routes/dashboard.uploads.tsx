@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { FileSpreadsheet, FileText, Trash2, UploadCloud, X } from "lucide-react";
 import { formatSize, useFiles, type UploadedFile } from "@/components/dashboard/files-context";
-import { ExcelViewer } from "@/components/dashboard/excel-viewer";
 
 export const Route = createFileRoute("/dashboard/uploads")({
   head: () => ({ meta: [{ title: "رفع الملفات — ZERO" }] }),
@@ -68,12 +67,7 @@ function UploadsPage() {
                   </span>
                   <button type="button" onClick={() => setPreview(f)} className="min-h-11 min-w-0 flex-1 text-right">
                     <span className="block truncate text-sm font-bold" dir="auto">{f.name}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {f.kind === "pdf" ? "PDF" : "Excel"} · {formatSize(f.size)}
-                      {f.kind === "excel" && f.status === "ready" && f.sheets && ` · ${f.sheets.reduce((n, s) => n + s.rows.length, 0)} سجل`}
-                      {f.status === "parsing" && " · جاري القراءة..."}
-                      {f.status === "error" && " · تعذّرت القراءة"}
-                    </span>
+                    <span className="block text-xs text-muted-foreground">{f.kind === "pdf" ? "PDF" : "Excel"} · {formatSize(f.size)}</span>
                   </button>
                   <button type="button" onClick={() => removeFile(f.id)} aria-label={`حذف ${f.name}`} className="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:text-destructive">
                     <Trash2 className="size-5" />
@@ -101,14 +95,10 @@ function PreviewDialog({ file, onClose }: { file: UploadedFile; onClose: () => v
       </div>
       {file.kind === "pdf" ? (
         <iframe src={file.url} title={file.name} className="w-full flex-1 bg-white" />
-      ) : file.status === "ready" && file.sheets ? (
-        <ExcelViewer sheets={file.sheets} />
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
           <FileSpreadsheet className="size-14 text-neon-3" aria-hidden />
-          <p className="text-sm text-muted-foreground">
-            {file.status === "parsing" ? "جاري قراءة الملف..." : "تعذّرت قراءة الملف. قد يكون تالفاً أو محمياً بكلمة مرور."}
-          </p>
+          <p className="text-sm text-muted-foreground">{formatSize(file.size)} · تم الرفع {file.uploadedAt.toLocaleTimeString("ar")}</p>
           <a href={file.url} download={file.name} className="flex min-h-11 items-center rounded-xl bg-primary px-5 font-bold text-primary-foreground">تنزيل الملف</a>
         </div>
       )}

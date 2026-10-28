@@ -1,5 +1,4 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { parseExcel, type Sheet } from "@/lib/excel";
 
 export type FileKind = "excel" | "pdf";
 
@@ -10,8 +9,6 @@ export type UploadedFile = {
   kind: FileKind;
   uploadedAt: Date;
   url: string;
-  status: "ready" | "parsing" | "error";
-  sheets?: Sheet[];
 };
 
 type FilesContextValue = {
@@ -53,21 +50,14 @@ export function FilesProvider({ children }: { children: ReactNode }) {
         rejected.push(file.name);
         continue;
       }
-      const entry: UploadedFile = {
+      accepted.push({
         id: crypto.randomUUID(),
         name: file.name,
         size: file.size,
         kind,
         uploadedAt: new Date(),
         url: URL.createObjectURL(file),
-        status: kind === "excel" ? "parsing" : "ready",
-      };
-      accepted.push(entry);
-      if (kind === "excel") {
-        parseExcel(file)
-          .then((sheets) => setFiles((prev) => prev.map((f) => (f.id === entry.id ? { ...f, sheets, status: "ready" } : f))))
-          .catch(() => setFiles((prev) => prev.map((f) => (f.id === entry.id ? { ...f, status: "error" } : f))));
-      }
+      });
     }
     if (accepted.length) setFiles((prev) => [...accepted, ...prev]);
     return { added: accepted.length, rejected };

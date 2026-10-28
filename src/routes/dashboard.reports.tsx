@@ -1,121 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileBarChart, FileSpreadsheet, FileText, HardDrive } from "lucide-react";
 import { formatSize, useFiles } from "@/components/dashboard/files-context";
-import { toNumber } from "@/lib/excel";
-
-type Group = { count: number; paid: number; remaining: number };
-
-function fmt(n: number) {
-  return n.toLocaleString("en-US");
-}
-
-function DataSummary() {
-  const { files } = useFiles();
-  let records = 0;
-  let paid = 0;
-  let remaining = 0;
-  let hasMoney = false;
-  const byStatus = new Map<string, number>();
-  const byAgent = new Map<string, Group>();
-
-  for (const file of files) {
-    for (const sheet of file.sheets ?? []) {
-      const { roles } = sheet;
-      if (roles.paid === undefined && roles.remaining === undefined) continue;
-      hasMoney = true;
-      for (const row of sheet.rows) {
-        records++;
-        const p = roles.paid !== undefined ? toNumber(row[roles.paid]) : 0;
-        const r = roles.remaining !== undefined ? toNumber(row[roles.remaining]) : 0;
-        paid += p;
-        remaining += r;
-        if (roles.status !== undefined) {
-          const s = String(row[roles.status]).trim() || "غير محدد";
-          byStatus.set(s, (byStatus.get(s) ?? 0) + 1);
-        }
-        if (roles.agent !== undefined) {
-          const a = String(row[roles.agent]).trim() || "غير محدد";
-          const g = byAgent.get(a) ?? { count: 0, paid: 0, remaining: 0 };
-          byAgent.set(a, { count: g.count + 1, paid: g.paid + p, remaining: g.remaining + r });
-        }
-      }
-    }
-  }
-
-  const hasExcel = files.some((f) => f.kind === "excel");
-  if (!hasMoney) {
-    return hasExcel ? (
-      <p className="glass mt-4 rounded-2xl p-5 text-sm text-muted-foreground">
-        لم يتم العثور على أعمدة مالية (الواصل / المتبقي) في ملفات Excel المرفوعة، لذلك لا يوجد ملخص مالي.
-      </p>
-    ) : null;
-  }
-
-  const statuses = [...byStatus.entries()].sort((a, b) => b[1] - a[1]);
-  const agents = [...byAgent.entries()].sort((a, b) => b[1].remaining - a[1].remaining || b[1].count - a[1].count);
-
-  return (
-    <>
-      <section className="glass mt-4 rounded-2xl p-5" aria-labelledby="money-heading">
-        <h2 id="money-heading" className="font-bold">ملخص البيانات المالية</h2>
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="rounded-xl bg-muted p-3">
-            <p className="text-xs text-muted-foreground">السجلات</p>
-            <p className="mt-1 text-xl font-bold" dir="ltr">{fmt(records)}</p>
-          </div>
-          <div className="rounded-xl bg-neon-3/10 p-3">
-            <p className="text-xs text-muted-foreground">إجمالي الواصل</p>
-            <p className="mt-1 text-xl font-bold text-neon-3" dir="ltr">{fmt(paid)}</p>
-          </div>
-          <div className="rounded-xl bg-destructive/10 p-3">
-            <p className="text-xs text-muted-foreground">إجمالي المتبقي</p>
-            <p className="mt-1 text-xl font-bold text-destructive" dir="ltr">{fmt(remaining)}</p>
-          </div>
-        </div>
-      </section>
-
-      {statuses.length > 0 && (
-        <section className="glass mt-4 rounded-2xl p-5" aria-labelledby="status-heading">
-          <h2 id="status-heading" className="font-bold">حسب حالة الجواز</h2>
-          <ul className="mt-3 flex flex-col gap-3">
-            {statuses.map(([status, count]) => (
-              <li key={status}>
-                <div className="flex justify-between gap-3 text-sm">
-                  <span dir="auto">{status}</span>
-                  <span className="font-bold" dir="ltr">{count}</span>
-                </div>
-                <div className="mt-1 h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full rounded-full bg-neon" style={{ width: `${(count / records) * 100}%` }} />
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {agents.length > 0 && (
-        <section className="glass mt-4 rounded-2xl p-5" aria-labelledby="agent-heading">
-          <h2 id="agent-heading" className="font-bold">حسب الوكيل</h2>
-          <ul className="mt-3 divide-y divide-border">
-            {agents.map(([agent, g]) => (
-              <li key={agent} className="flex items-center justify-between gap-3 py-3 text-sm">
-                <div className="min-w-0">
-                  <p className="truncate font-bold" dir="auto">{agent}</p>
-                  <p className="text-xs text-muted-foreground">{g.count} جواز</p>
-                </div>
-                <div className="shrink-0 text-left" dir="ltr">
-                  <p className="font-bold text-neon-3">{fmt(g.paid)}</p>
-                  <p className={`text-xs ${g.remaining > 0 ? "font-bold text-destructive" : "text-muted-foreground"}`}>{fmt(g.remaining)}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs text-muted-foreground">الرقم الأخضر: الواصل · الأحمر: المتبقي</p>
-        </section>
-      )}
-    </>
-  );
-}
 
 export const Route = createFileRoute("/dashboard/reports")({
   head: () => ({ meta: [{ title: "التقارير — ZERO" }] }),
@@ -150,8 +35,6 @@ function ReportsPage() {
           </div>
         ))}
       </div>
-
-      <DataSummary />
 
       <section className="glass mt-4 rounded-2xl p-5" aria-labelledby="dist-heading">
         <h2 id="dist-heading" className="font-bold">توزيع الملفات حسب النوع</h2>
