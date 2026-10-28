@@ -10,12 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as OwnerLoginRouteImport } from './routes/owner-login'
 import { Route as UserLoginRouteImport } from './routes/user-login'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardUploadsRouteImport } from './routes/dashboard.uploads'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OwnerLoginRoute = OwnerLoginRouteImport.update({
@@ -28,33 +37,81 @@ const UserLoginRoute = UserLoginRouteImport.update({
   path: '/user-login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardUploadsRoute = DashboardUploadsRouteImport.update({
+  id: '/uploads',
+  path: '/uploads',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/owner-login': typeof OwnerLoginRoute
   '/user-login': typeof UserLoginRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/uploads': typeof DashboardUploadsRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/owner-login': typeof OwnerLoginRoute
   '/user-login': typeof UserLoginRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/uploads': typeof DashboardUploadsRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/owner-login': typeof OwnerLoginRoute
   '/user-login': typeof UserLoginRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/uploads': typeof DashboardUploadsRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/owner-login' | '/user-login'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/owner-login'
+    | '/user-login'
+    | '/dashboard/reports'
+    | '/dashboard/uploads'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/owner-login' | '/user-login'
-  id: '__root__' | '/' | '/owner-login' | '/user-login'
+  to:
+    | '/'
+    | '/owner-login'
+    | '/user-login'
+    | '/dashboard/reports'
+    | '/dashboard/uploads'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/owner-login'
+    | '/user-login'
+    | '/dashboard/reports'
+    | '/dashboard/uploads'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   OwnerLoginRoute: typeof OwnerLoginRoute
   UserLoginRoute: typeof UserLoginRoute
 }
@@ -66,6 +123,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/owner-login': {
@@ -82,11 +146,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/uploads': {
+      id: '/dashboard/uploads'
+      path: '/uploads'
+      fullPath: '/dashboard/uploads'
+      preLoaderRoute: typeof DashboardUploadsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardReportsRoute: typeof DashboardReportsRoute
+  DashboardUploadsRoute: typeof DashboardUploadsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardReportsRoute: DashboardReportsRoute,
+  DashboardUploadsRoute: DashboardUploadsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   OwnerLoginRoute: OwnerLoginRoute,
   UserLoginRoute: UserLoginRoute,
 }
