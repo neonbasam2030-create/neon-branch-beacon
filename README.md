@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Neon Branch Beacon
+
+اريد ان تنشى لي نظام ويب بسيط وبدون قاعده بيانات حقيقيه كبدايه المشروع يكون عند فتح النظام يظهر واجهه نفس فكره الصوره الذي ارسلت لك ولكن اعطيني الالوان الذي ستكون مناسبه للنظام ويكون مستخدما خط نيون مع انيميشن جذاب
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://neon-branch-beacon.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/f2c6ac44-a6d9-41e2-b01e-0890a928551a).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
