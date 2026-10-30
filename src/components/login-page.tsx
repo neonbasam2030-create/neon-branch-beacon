@@ -34,6 +34,7 @@ export function LoginPage({ title }: { title: string }) {
         </label>
         <button className="mt-6 w-full rounded-xl bg-primary py-3 font-bold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-[var(--glow)]">دخول</button>
         {msg && <p className="mt-4 text-center text-sm text-neon-2">{msg}</p>}
+        <Link to="/app/upload" className="mt-4 block rounded-xl border border-neon/40 py-3 text-center text-sm font-bold text-neon transition hover:shadow-[var(--glow)]">دخول النظام التجريبي (بدون حساب)</Link>
         <Link to="/" className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground transition hover:text-neon"><ArrowRight className="size-4" /> العودة للرئيسية</Link>
       </form>
     </div>
